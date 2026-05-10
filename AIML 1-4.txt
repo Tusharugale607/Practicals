@@ -1,0 +1,124 @@
+Exp-1 Program for generating Fibonacci series
+
+# Iterative approach 
+ def fibonacci_series(n):    
+   fib = [0, 1]     
+   for i in range(2, n): 
+       fib.append(fib[i-1] + fib[i-2])    
+   return fib 
+# Example Usage 
+   print(fibonacci_series(10)) 
+
+Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+
+
+
+Exp-2 Implement A* approach for any suitable application
+
+from queue import PriorityQueue 
+def a_star_algorithm(graph, start, goal, h): 
+    open_set = PriorityQueue()  
+    open_set.put((0, start))    
+    came_from = {} 
+    g_score = {node: float('inf') for node in graph}  
+    g_score[start] = 0 
+ 
+    while not open_set.empty():       
+      _, current = open_set.get()        
+      if current == goal: 
+         path = []         
+         while current in came_from:       
+           path.append(current)                
+           current = came_from[current]   
+         path.append(start)           
+         return path[::-1] 
+ 
+      for neighbor, cost in graph[current]: 
+         tentative_g_score = g_score[current] + cost         
+         if tentative_g_score < g_score[neighbor]:               
+            came_from[neighbor] = current              
+            g_score[neighbor] = tentative_g_score             
+            f_score = g_score[neighbor] + h[neighbor]              
+            open_set.put((f_score, neighbor))   
+    return [] 
+# Example usage 
+  graph = { 
+    'A': [('B', 1), ('C', 3)], 
+    'B': [('D', 4), ('E', 2)], 
+    'C': [('F', 5)], 
+    'D': [], 
+    'E': [('F', 1)], 
+    'F': [] 
+  } 
+  heuristic = {'A': 6, 'B': 4, 'C': 2, 'D': 4, 'E': 1, 'F': 0} 
+  path = a_star_algorithm(graph, 'A', 'F', heuristic)
+  print("Shortest path:", path) 
+ 
+Output: Shortest path: ['A', 'B', 'E', 'F'] 
+
+
+Exp-3 Program to implement simple Chatbot
+
+import re
+def chatbot(): 
+  print("Chatbot: Hello! How can I assist you? Type 'bye' to exit.")    
+  while True: 
+      user_input = input("You: ")        
+      if user_input.lower() == 'bye': 
+          print("Chatbot: Goodbye! Have a great day!")      
+          break       
+      elif re.search(r'hi|hello|hey', user_input, re.IGNORECASE): 
+          print("Chatbot: Hello! How can I help you?")     
+      elif re.search(r'weather', user_input, re.IGNORECASE): 
+          print("Chatbot: The weather is great today!")       
+      elif re.search(r'name', user_input, re.IGNORECASE): 
+          print("Chatbot: I'm a simple chatbot. What's your name?")         
+      else: 
+          print("Chatbot: I'm sorry, I don't understand that.") 
+
+# Run the chatbot 
+chatbot() 
+
+Output: 
+Chatbot: Hello! How can I assist you? Type 'bye' to exit. 
+You: Hi 
+Chatbot: Hello! How can I help you? 
+You: What's your name? 
+Chatbot: I'm a simple chatbot. What's your name? 
+You: Bye 
+Chatbot: Goodbye! Have a great day! 
+
+
+
+Exp-4 i) Central Tendency Measures: Mean, Median, Mode ii) Measure of Dispersion: Variance, Standard Deviation 
+
+import numpy as np 
+import statistics as stats 
+# Sample data 
+data = [12, 15, 12, 15, 19, 21, 23, 25, 23, 22] 
+# Central Tendency
+mean = np.mean(data)
+median = np.median(data) 
+mode = stats.mode(data) 
+# Dispersion
+variance = np.var(data)
+std_dev = np.std(data) 
+ 
+Output:
+print("Mean:", mean)   
+print("Median:", median) 
+print("Mode:", mode)     
+print("Variance:", variance)   
+print("Standard Deviation:", std_dev)   
+
+Output Ans:
+Mean: 18.7 
+Median: 19.0 
+Mode: 12 
+Variance: 19.609999999999996 
+Standard Deviation: 4.427188724235731  
+
+ 
+
+
+

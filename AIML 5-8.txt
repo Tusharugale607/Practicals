@@ -1,0 +1,160 @@
+Exp-5 Write a Python program to implement Simple Linear Regression
+
+import numpy as np 
+import matplotlib.pyplot as plt 
+from sklearn.linear_model import LinearRegression 
+from sklearn.metrics import mean_squared_error, r2_score 
+#Sample dataset 
+X = np.array([1, 2, 3, 4, 5]).reshape(-1, 1) 
+y = np.array([1.5, 3.2, 4.8, 6.4, 8.0]) 
+# Fitting the model
+model = LinearRegression() 
+model.fit(X, y) 
+# Predictions 
+y_pred = model.predict(X) 
+# Plotting 
+plt.scatter(X, y, color='blue', label='Actual Data') 
+plt.plot(X, y_pred, color='red', label='Regression Line') 
+plt.xlabel('X') 
+plt.ylabel('Y') 
+plt.legend() 
+plt.show() 
+# Performance metrics 
+print("Mean Squared Error:", mean_squared_error(y, y_pred)) 
+print("R-squared:", r2_score(y, y_pred)) 
+
+Output: Mean Squared Error: 0.000800000000000005 
+        R-squared: 0.999847607436757 
+
+
+
+Exp-6 Implementation of Multiple Linear Regression for House Price Prediction using sklearn
+
+# Importing libraries 
+import pandas as pd 
+from sklearn.linear_model import LinearRegression 
+from sklearn.model_selection import train_test_split
+# Sample dataset 
+data = { 
+    'Size': [1500, 1600, 1700, 1800, 1900], 
+    'Bedrooms': [3, 4, 3, 3, 5], 
+    'Age': [10, 15, 20, 25, 30], 
+    'Price': [400000, 430000, 450000, 470000, 500000] 
+} 
+df = pd.DataFrame(data) 
+# Features and target 
+X = df[['Size', 'Bedrooms', 'Age']] 
+y = df['Price'] 
+# Splitting data 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42) 
+# Fitting the model 
+model = LinearRegression() 
+model.fit(X_train, y_train) 
+# Predictions 
+y_pred = model.predict(X_test) 
+# Display coefficients 
+print("Coefficients:", model.coef_) 
+print("Intercept:", model.intercept_) 
+
+Output: Coefficients: [ 235.12646954 2500.      11.75632348] 
+        Intercept: 40407.01816886355 
+
+
+
+Exp-8 Implement SVM classifier for classification of data
+
+from sklearn.datasets import make_classification 
+from sklearn.svm import SVC 
+from sklearn.model_selection import train_test_split 
+from sklearn.metrics import accuracy_score 
+# Generate dataset 
+X, y = make_classification(n_samples=1000, n_features=20, n_classes=2, random_state=42) 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42) 
+# Initialize and train the SVM model 
+svm = SVC(kernel='rbf', C=1.0, gamma='scale') 
+svm.fit(X_train, y_train) 
+# Test the model 
+y_pred = svm.predict(X_test) accuracy = accuracy_score(y_test, y_pred) 
+print("Accuracy:", accuracy) 
+
+Output: Accuracy: 0.8333333333333334 
+
+
+
+
+Exp-9 Implementation of AND/NAND gate using feed forward Neural Network
+
+import numpy as np 
+import matplotlib.pyplot as plt 
+from keras.models import Sequential 
+from keras.layers import Dense 
+# Prepare the dataset for AND gate 
+X_and = np.array([[0, 0], 
+                  [0, 1], 
+                  [1, 0], 
+                  [1, 1]]) 
+y_and = np.array([[0], [0], [0], [1]])  # AND gate outputs 
+ 
+# Prepare the dataset for NAND gate 
+X_nand = np.array([[0, 0], 
+                   [0, 1], 
+                   [1, 0], 
+                   [1, 1]]) 
+y_nand = np.array([[1], [1], [1], [0]])  # NAND gate outputs 
+# Function to create and train the model 
+def create_and_train_model(X, y): 
+    # Create the model     
+    model = Sequential() 
+    model.add(Dense(2, input_dim=2, activation='sigmoid'))  # Hidden layer     
+    model.add(Dense(1, activation='sigmoid'))  # Output layer 
+    # Compile the model 
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy']) 
+    # Train the model 
+    model.fit(X, y, epochs=5000, verbose=0)
+    return model 
+# Train the AND gate model 
+and_model = create_and_train_model(X_and, y_and) 
+print("AND Gate Predictions:") 
+print(and_model.predict(X_and)) 
+
+# Train the NAND gate model 
+nand_model = create_and_train_model(X_nand, y_nand) 
+print("\nNAND Gate Predictions:") 
+print(nand_model.predict(X_nand)) 
+# Visualize predictions 
+def plot_predictions(model, X, title):     
+    predictions = model.predict(X)     
+    plt.figure() 
+    plt.scatter(X[:, 0], X[:, 1], c=predictions.flatten(), cmap='coolwarm', s=100)
+    plt.title(title)     
+    plt.xlabel('Input 1')   
+    plt.ylabel('Input 2') 
+    plt.colorbar(label='Output')  
+    plt.xlim(-0.5, 1.5)  
+    plt.ylim(-0.5, 1.5) 
+    plt.axhline(0.5, color='grey', lw=0.5, ls='--') 
+    plt.axvline(0.5, color='grey', lw=0.5, ls='--')     
+    plt.show() 
+# Plotting the predictions for both gates 
+plot_predictions(and_model, X_and, "AND Gate Predictions") 
+plot_predictions(nand_model, X_nand, "NAND Gate Predictions")
+ 
+Output: 
+The output will include: 
+•Predictions of the AND gate for all input combinations. 
+•Predictions of the NAND gate for all input combinations.
+•Visual representations of the outputs for both gates.
+
+AND Gate Predictions: 
+ [[0.0078743 ] 
+ [0.05962712] 
+ [0.05721872] 
+ [0.8741023 ]] 
+ 
+NAND Gate Predictions: 
+ [[0.9968361 ] 
+ [0.96912295] 
+ [0.96753514] 
+ [0.11274968]] 
+
+  

@@ -1,0 +1,60 @@
+Exp4(Verilog)-To write Verilog code & test bench, synthesis and simulate Parity generator
+
+module parity_generator (
+    input [3:0] data,      // 4-bit input data
+    output reg even_parity,    // Even parity bit
+    output reg odd_parity      // Odd parity bit
+);
+
+    always @(*) begin
+        // Even parity: XOR all bits together (0 if even number of 1s, 1 if odd number of 1s)
+        even_parity = data[3] ^ data[2] ^ data[1] ^ data[0];
+        
+        // Odd parity: Complement of even parity
+        odd_parity = ~even_parity;
+    end
+
+endmodule
+
+
+
+Exp5(Verilog)-To write Verilog code & test bench, synthesis and simulate the Read-Only Memory
+
+module simple_rom (
+    input wire clk,                 // Clock
+    input wire [3:0] addr,           // 4-bit address (16 locations)
+    output reg [9:0] data             // 10-bit data output
+);
+
+    // ROM memory: 16 words × 10 bits
+    reg [9:0] ROM [0:15];
+
+    // Initialize ROM contents
+    initial begin
+        ROM[0]  = 10'b0000000001;
+        ROM[1]  = 10'b0000000010;
+        ROM[2]  = 10'b0000000100;
+        ROM[3]  = 10'b0000001000;
+        ROM[4]  = 10'b0000010000;
+        ROM[5]  = 10'b0000100000;
+        ROM[6]  = 10'b0001000000;
+        ROM[7]  = 10'b0010000000;
+        ROM[8]  = 10'b0100000000;
+        ROM[9]  = 10'b1000000000;
+        ROM[10] = 10'b1111111111;
+        ROM[11] = 10'b1010101010;
+        ROM[12] = 10'b0101010101;
+        ROM[13] = 10'b1100110011;
+        ROM[14] = 10'b0011001100;
+        ROM[15] = 10'b0000000000;
+    end
+
+    // Synchronous ROM read
+    always @(posedge clk) begin
+        data <= ROM[addr];
+    end
+
+endmodule
+
+
+

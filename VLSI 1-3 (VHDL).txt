@@ -1,0 +1,137 @@
+Exp-1(VHDL)-To write VHDL code & test bench, synthesis and simulate D Flip-flop 
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+entity dff1 is
+	port (clk,d : in STD_LOGIC;
+		q : out STD_LOGIC);
+end dff1;
+ 
+ architecture Behavioral of dff1 is
+ begin 
+	process(clk)
+	begin 
+		if rising_edge (clk) then
+			q <= d;
+		end if;
+	end process;
+end Behavioral;
+
+
+Exp2(VHDL)-To write VHDL code & test bench, synthesis and simulate ALU
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity alu is
+	port(A: in STD_LOGIC_VECTOR(1 downto 0);
+		  B: in STD_LOGIC_VECTOR(1 downto 0);
+		  op_sel: in STD_LOGIC_VECTOR(1 downto 0);
+		  result: out STD_LOGIC_VECTOR(1 downto 0);
+		  carry: out STD_LOGIC);
+end alu;
+
+architecture Behavioral of alu is
+begin
+	process(A, B, op_sel)
+	begin
+		if op_sel = "00" then		   -- ADD
+			result <= A+B;
+			if(A+B) > "11" then
+				carry <= '1';
+			else
+				carry <= '0';
+			end if;
+		
+		elsif op_sel = "01" then		-- SUB
+			result <= A-B;
+			if A < B then
+				carry <='1';
+			else
+				carry <= '0';				-- borrow
+			end if;
+			
+		elsif op_sel = "10" then		--AND
+			result <= A and B;
+			carry <='0';
+			
+		elsif op_sel ="11" then 		-- OR
+			result <= A or B ;
+			carry <= '0';
+		end if;
+	
+	end process;
+end Behavioral;
+
+
+
+Exp3(VHDL)-To write VHDL code & test bench, synthesis and simulate the Traffic Light Controller
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity traffic_light is
+    Port (
+        clk   : in  STD_LOGIC;   
+        reset : in  STD_LOGIC;   
+        red   : out STD_LOGIC;
+        yellow: out STD_LOGIC;
+        green : out STD_LOGIC
+    );
+end traffic_light;
+
+architecture tlc_arch of traffic_light is
+
+    
+    type state_type is (S_RED, S_YELLOW, S_GREEN);
+    signal state : state_type := S_RED;
+
+    -- Clock divider
+    signal counter : unsigned(25 downto 0) := (others => '0'); 
+    constant MAX_COUNT : unsigned(25 downto 0) := to_unsigned(50_000_000, 26);   
+
+begin
+  
+    -- Clock Divider (1 second tick)
+   
+    process(clk, reset)
+    begin
+        if reset = '1' then
+            counter <= (others => '0');
+        elsif rising_edge(clk) then
+            if counter = MAX_COUNT then
+                counter <= (others => '0');
+            else
+                counter <= counter + 1;
+            end if;
+        end if;
+    end process;
+
+    -- State Machine
+   
+    process(clk, reset)
+    begin
+        if reset = '1' then
+            state <= S_RED;
+        elsif rising_edge(clk) then
+            if counter = MAX_COUNT then
+                case state is
+                    when S_RED    => state <= S_GREEN;
+                    when S_GREEN  => state <= S_YELLOW;
+                    when S_YELLOW => state <= S_RED;
+                end case;
+            end if;
+        end if;
+    end process;
+
+    -- Output Logic
+   
+    red    <= '1' when state = S_RED else '0';
+    yellow <= '1' when state = S_YELLOW else '0';
+    green  <= '1' when state = S_GREEN else '0';
+
+end tlc_arch;
